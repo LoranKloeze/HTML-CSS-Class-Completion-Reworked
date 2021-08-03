@@ -6,17 +6,18 @@ export default class CssClassExtractor {
      * @description Extracts class names from CSS AST
      */
     public static extract(ast: css.Stylesheet): CssClassDefinition[] {
-        const classNameRegex = /[.]([\w-]+)/g;
+        const classNameRegex = /[.]([\w-\/\\]+)/g;
 
         const definitions: CssClassDefinition[] = [];
 
         // go through each of the selectors of the current rule
         const addRule = (rule: css.Rule) => {
             rule.selectors?.forEach((selector: string) => {
-                let item: RegExpExecArray | null = classNameRegex.exec(selector);
+                let saneSelector = selector.replace('\\/', '/')
+                let item: RegExpExecArray | null = classNameRegex.exec(saneSelector);
                 while (item) {
                     definitions.push(new CssClassDefinition(item[1]));
-                    item = classNameRegex.exec(selector);
+                    item = classNameRegex.exec(saneSelector);
                 }
             });
         };
