@@ -142,6 +142,7 @@ const registerHTMLProviders = (disposables: Disposable[]) =>
         ?.get<string[]>(Configuration.HTMLLanguages)
         ?.forEach((extension) => {
             disposables.push(registerCompletionProvider(extension, /class=["|']([\w- ]*$)/));
+            disposables.push(registerCompletionProvider(extension, /class:\s["|']([\w- ]*$)/));
         });
 
 const registerCSSProviders = (disposables: Disposable[]) =>
